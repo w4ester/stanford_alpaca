@@ -10,7 +10,6 @@ python -m generate_instruction generate_instruction_following_data \
 import time
 import json
 import os
-import random
 import re
 import string
 from functools import partial
@@ -22,6 +21,7 @@ from rouge_score import rouge_scorer
 import utils
 
 import fire
+import secrets
 
 
 def encode_prompt(prompt_instructions):
@@ -153,7 +153,7 @@ def generate_instruction_following_data(
         batch_inputs = []
         for _ in range(request_batch_size):
             # only sampling from the seed tasks
-            prompt_instructions = random.sample(seed_instruction_data, num_prompt_instructions)
+            prompt_instructions = secrets.SystemRandom().sample(seed_instruction_data, num_prompt_instructions)
             prompt = encode_prompt(prompt_instructions)
             batch_inputs.append(prompt)
         decoding_args = utils.OpenAIDecodingArguments(
